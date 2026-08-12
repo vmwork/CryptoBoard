@@ -7,7 +7,7 @@
                     Почему <span class="text-primary">CryptoBoard</span>?
                 </h2>
                 <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">
-                    Все, что нужно для безопасной и выгодной торговли цифровыми активами
+                    Все, что нужно для безопасной и выгодной торговли.
                 </p>
             </div>
 
