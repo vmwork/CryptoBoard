@@ -4,12 +4,12 @@ services:
     command: npm run dev -- --host 0.0.0.0 --port 3000
     volumes:
       - ./frontend:/app
-      - ngo_dev_frontend_node_modules:/app/node_modules
-      - ngo_dev_frontend_nuxt:/app/.nuxt
+      - classifyd_dev_frontend_node_modules:/app/node_modules
+      - classifyd_dev_frontend_nuxt:/app/.nuxt
     environment:
       - NITRO_PORT=3000
       - NITRO_HOST=0.0.0.0
-      - NUXT_API_BASE=http://dev_backend:8000
+      - NUXT_API_BASE=http://classifyd_dev_api:8000
       - NUXT_PUBLIC_API_BASE=
     ports:
       - "3000:3000"
@@ -24,20 +24,10 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${NGO_DEV_POSTGRES_DB:-ngo_dev_db}
-      - REDIS_URL=redis://dev_dragonfly:6379
+      - POSTGRES_DB=${CLASSIFYD_DEV_POSTGRES_DB:-classifyd_dev_db}
+      - REDIS_URL=redis://classifyd_dev_cache:6379
       - SECRET_KEY=${SECRET_KEY}
-      - ALGORITHM=${ALGORITHM:-HS256}
-      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-10080}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
-
-networks:
-  ngo_local_network:
-    name: ngo_local_network
-    driver: bridge
-    external: false
 
 volumes:
-  ngo_dev_frontend_node_modules:
-  ngo_dev_frontend_nuxt:
+  classifyd_dev_frontend_node_modules:
+  classifyd_dev_frontend_nuxt:

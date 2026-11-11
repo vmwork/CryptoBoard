@@ -3,6 +3,14 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   css: ['~/assets/css/tailwind.css'],
   compatibilityDate: '2025-01-01',
+  runtimeConfig: {
+    apiBase: process.env.NUXT_API_BASE || 'http://localhost:8000',
+    internalBffSecret: process.env.INTERNAL_BFF_SECRET || '',
+    sessionCookieName: process.env.NUXT_SESSION_COOKIE_NAME || 'session_id',
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
+    },
+  },
   app: {
     head: {
       link: [

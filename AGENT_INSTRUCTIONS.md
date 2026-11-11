@@ -10,12 +10,12 @@
 * **Frontend:** Nuxt 4, Vue 3, TypeScript, Nitro SSR, Pinia, VueUse, Tailwind CSS, `@nuxtjs/i18n`. Form handling relies on installed `vee-validate` and `Zod`.
 * **Web3 / Smart Contracts:** Solidity (OpenZeppelin: `IERC20`, `ERC721`, `ReentrancyGuard`, `Ownable`) targeting low-fee EVM chains (Arbitrum / Polygon / Base). Frontend wallet connection via `wagmi` / `viem` / Reown AppKit (WalletConnect) with future Telegram Mini App (`initData` + TON Connect) extensibility.
 * **Cache & Rate Limiting:** Dragonfly (Redis protocol), client via `redis` / `fastapi-limiter`.
-* **Backend Directory Layout:** `backend/apis` (HTTP routers), `backend/services` (business logic), `backend/schemas` (Pydantic schemas), `backend/models` (SQLAlchemy models), `backend/core` (global config), `backend/db` (database connection and sessions), `contracts/` (Solidity smart contracts & tests).
+* **Backend Directory Layout:** `backend/app/api/v1/endpoints/` (HTTP endpoints), `backend/app/api/v1/router.py` (v1 router registration), `backend/app/services/` (business logic), `backend/app/schemas/` (Pydantic schemas), `backend/app/models/` (SQLAlchemy models), `backend/app/core/` (global config), `backend/app/db/` (database connection and sessions), `contracts/` (Solidity smart contracts & tests).
 * **Frontend Directory Layout:** Application UI/logic in `frontend/app`; server-side Nitro API handlers in `frontend/server/api`; Markdown knowledge base in `frontend/content/guides`.
 
 ## Networking & Service Interoperability
 * **Production Routing:** External HTTP(S) traffic is terminated by Caddy on ports 80 and 443. Backend, Nuxt, PostgreSQL, and Dragonfly do NOT publish ports to the host; `expose` keeps services internal to the Docker network. Never expose internal database or backend ports externally.
-* **BFF Pattern & Route Obfuscation:** Browser requests client API via `/api/...`. Requests are processed by Nitro BFF in `frontend/server/api/***`; BFF calls FastAPI via internal address `NUXT_API_BASE` (`http://backend:8000` in production) using internal `/api/v1/...` namespaces (e.g., `/api/v1/hi/common/...`) and passes `X-Internal-Bff-Secret` header.
+* **BFF Pattern & Route Obfuscation:** Browser requests client API via `/api/...`. Requests are processed by Nitro BFF in `frontend/server/api/***`; BFF calls FastAPI via internal address `NUXT_API_BASE` (`http://classifyd_api:8000` in production) using internal `/api/v1/...` namespaces (e.g., `/api/v1/hi/common/...`) and passes `X-Internal-Bff-Secret` header.
 * **BFF Responsibility:** Acts as the frontend/backend boundary. Strips internal/sensitive fields, passes auth credentials (`httpOnly` session cookie) and locale headers, adapts request/response payloads. Core business rules MUST remain in the backend.
 * **Dual-Path useApi:** Browser requests go to `/api/...` via BFF. During SSR, composables may query `NUXT_API_BASE` directly over the internal Docker network. Preserve this behavior for SSR, auth, and routing integrity.
 * **Upload Routes:** Caddy proxies `/api/uploads/**` directly to backend (stripping `/api`). Nuxt also maintains a Nitro handler for `/api/uploads/***`.
@@ -25,23 +25,23 @@
 ## Backend & API Guidelines
 * **Database Model:** Maintain the synchronous SQLAlchemy session pattern. Do not introduce a secondary ORM or asynchronous paradigm without explicit architecture alignment.
 * **Separation of Concerns:** Endpoints validate input and delegate to services; services handle business logic; ORM models represent storage; Pydantic schemas enforce API contracts.
-* **Routing:** Attach endpoints via existing routers in `backend/apis/v1/` and register in `backend/apis/base.py`. Preserve `/api/v1` versioning and response structures.
+* **Routing:** Attach endpoints from `backend/app/api/v1/endpoints/` in `backend/app/api/v1/router.py`. Preserve `/api/v1` versioning and response structures.
 * **Data Validation:** Use Pydantic schemas for request validation and response serialization. Never return raw ORM models or leak wallet nonces, secrets, or internal fields.
 * **Error Handling:** Return expected errors using `HTTPException` with proper HTTP status codes. Do not mask unexpected failures with broad `except` blocks or fake success responses. Log errors according to project standards without exposing sensitive data.
 * **Transactions:** Explicitly commit or rollback transactions and close sessions via the `get_db` dependency.
 * **Authentication (SIWE Stateful Sessions — No JWT in Client Storage):**
   * Users authenticate exclusively via **Sign-In with Ethereum (SIWE)** wallet signatures.
   * Nitro BFF generates a short-lived `nonce` stored in Dragonfly, verifies the cryptographic signature, creates a stateful `session_id` in Dragonfly (with TTL), and sets an `httpOnly; Secure; SameSite=Strict` cookie (`auth_token` / `session_id`). Do NOT use email/password auth or store tokens in `localStorage`.
-* **Tiered Limits & Anti-Bot Rules (Business Logic in `backend/services`):**
+* **Tiered Limits & Anti-Bot Rules (Business Logic in `backend/app/services`):**
   * **Free Tier:** Up to **3 active listings** for free. If a connected wallet has `0` historical on-chain transactions (verified via RPC and cached in Dragonfly), free slots are blocked and a Seller Passport is required immediately.
   * **Seller Passport Tier (\$1 one-time):** Minting a Soulbound NFT Seller Passport for **1 USDT** unlocks up to **10 active listings**, bypasses new-account pre-moderation, and splits payment 50/50 on-chain (**0.50 USDT** to `referrer`, **0.50 USDT** to platform treasury).
   * **Business / Pro Tier (11+ listings):** Subscription teaser / waitlist for MVP.
 * **External Listing Import & Media Pipeline:**
   * User-initiated JSON import from external classifieds (e.g., OLX) is fetched via isolated **Cloudflare Workers** to protect server IPs and avoid CORS.
-  * Upon saving a listing, `backend/services` downloads images to local/S3/R2 storage, strips all **EXIF metadata** (privacy protection), optionally removes corner competitor watermarks via OpenCV `inpaint`, applies the branded **Classifyd** watermark (with listing ID & Escrow badge), and converts to **WebP**.
+  * Upon saving a listing, `backend/app/services` downloads images to local/S3/R2 storage, strips all **EXIF metadata** (privacy protection), optionally removes corner competitor watermarks via OpenCV `inpaint`, applies the branded **Classifyd** watermark (with listing ID & Escrow badge), and converts to **WebP**.
 
 ## Database & Migrations
-* **Source of Truth:** SQLAlchemy models in `backend/models` and Alembic migrations in `backend/alembic/versions`.
+* **Source of Truth:** SQLAlchemy models in `backend/app/models` and Alembic migrations in `backend/alembic/versions`.
 * **Identifiers:** Primary keys MUST use **UUID v7**. Never expose sequential integer IDs in public URLs or API responses. Preserve foreign keys, constraints, enums, and cascade rules.
 * **Localization:** Use the existing `MultilingualText` type for localized fields.
 * **Schema Modifications:** Every schema change requires a new Alembic migration. Never edit applied migrations or rely on `create_all`.
@@ -72,7 +72,7 @@ Smart Contracts (Solidity)
 
 Configuration & Secrets
 
-• Environment Variables: Verify real usage in code before introducing new variables. Key backend vars: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB, SECRET_KEY, INTERNAL_BFF_SECRET, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, REDIS_URL, EVM_RPC_URL, ESCROW_CONTRACT_ADDRESS, CF_WORKER_IMPORT_URL.
+• Environment Variables: Verify real usage in code before introducing new variables. Key backend vars: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB, SECRET_KEY, INTERNAL_BFF_SECRET, REDIS_URL, EVM_RPC_URL, ESCROW_CONTRACT_ADDRESS, CF_WORKER_IMPORT_URL.
 • Nuxt Runtime Config: Uses NUXT_API_BASE, NUXT_PUBLIC_API_BASE, NUXT_PUBLIC_WALLETCONNECT_PROJECT_ID, and SITE_URL. Keep internal server addresses isolated from public configurations.
 • Secrets Management: Never hardcode credentials, tokens, or private keys in code, tests, logs, or docs. Keep real .env files out of Git tracking. Keep .env.example safe with placeholder values.
 • Environment Isolation: Use separate database instances for production, staging, and local testing. Never run tests or seeds against shared or production databases.

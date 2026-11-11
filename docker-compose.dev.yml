@@ -1,36 +1,36 @@
-name: ngo-crm-dev
+name: classifyd-dev
 
 services:
   dev_postgres:
     image: postgres:15-alpine
-    container_name: ngo_dev_postgres
+    container_name: classifyd_dev_postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${NGO_DEV_POSTGRES_DB:-ngo_dev_db}
+      POSTGRES_DB: ${CLASSIFYD_DEV_POSTGRES_DB:-classifyd_dev_db}
     expose:
       - "5432"
     volumes:
-      - ngo_dev_postgres_data:/var/lib/postgresql/data
+      - classifyd_dev_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}" ]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - ngo_crm_network
+      - classifyd_network
 
   dev_dragonfly:
     image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
-    container_name: ngo_dev_cache
+    container_name: classifyd_dev_cache
     expose:
       - "6379"
     volumes:
-      - ngo_dev_dragonfly_data:/data
+      - classifyd_dev_dragonfly_data:/data
     environment:
       - HEALTHCHECK_PORT=6379
     networks:
-      - ngo_crm_network
+      - classifyd_network
     healthcheck:
       test: [ "CMD-SHELL", "/usr/local/bin/healthcheck.sh" ]
       interval: 10s
@@ -41,7 +41,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ngo_dev_api
+    container_name: classifyd_dev_api
     # ⚡ СТЕЙДЖ: строго 1 воркер для экономии ресурсов
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 1
     expose:
@@ -54,21 +54,24 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${NGO_DEV_POSTGRES_DB:-ngo_dev_db}
-      - REDIS_URL=redis://dev_dragonfly:6379
-      - SECRET_KEY=${SECRET_KEY}
-      - ALGORITHM=${ALGORITHM:-HS256}
-      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-10080}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
-      - INITIAL_ADMIN_PASSWORD=${INITIAL_ADMIN_PASSWORD:-}
+      - POSTGRES_DB=${CLASSIFYD_DEV_POSTGRES_DB:-classifyd_dev_db}
+      - REDIS_URL=redis://classifyd_dev_cache:6379
+      - SECRET_KEY=${SECRET_KEY:?SECRET_KEY is required}
+      - INTERNAL_BFF_SECRET=${INTERNAL_BFF_SECRET:?INTERNAL_BFF_SECRET is required}
+      - EVM_RPC_URL=${EVM_RPC_URL:?EVM_RPC_URL is required}
+      - EVM_CHAIN_ID=${EVM_CHAIN_ID:-42161}
+      - SIWE_DOMAIN=${SIWE_DOMAIN:-localhost}
+      - SIWE_URI=${SIWE_URI:-http://localhost}
+      - SESSION_COOKIE_NAME=${SESSION_COOKIE_NAME:-session_id}
+      - NONCE_TTL_SECONDS=${NONCE_TTL_SECONDS:-300}
+      - SESSION_TTL_SECONDS=${SESSION_TTL_SECONDS:-604800}
     depends_on:
       dev_postgres:
         condition: service_healthy
       dev_dragonfly:
         condition: service_healthy
     networks:
-      ngo_crm_network:
+      classifyd_network:
         aliases:
           - dev_backend
 
@@ -76,7 +79,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: ngo_dev_nuxt
+    container_name: classifyd_dev_frontend
     ports:
       - "3000:3000"
     expose:
@@ -84,25 +87,27 @@ services:
     environment:
       - NITRO_PORT=3000
       - NITRO_HOST=0.0.0.0
-      - NUXT_API_BASE=http://dev_backend:8000
+      - NUXT_API_BASE=http://classifyd_dev_api:8000
       - NUXT_PUBLIC_API_BASE=http://dev.localhost
+      - NUXT_INTERNAL_BFF_SECRET=${INTERNAL_BFF_SECRET:?INTERNAL_BFF_SECRET is required}
+      - NUXT_SESSION_COOKIE_NAME=${SESSION_COOKIE_NAME:-session_id}
       - NUXT_PUBLIC_SITE_URL=http://dev.localhost
       - SITE_URL=http://dev.localhost
       - SITE_INDEXABLE=false
     depends_on:
       - dev_backend
     networks:
-      ngo_crm_network:
+      classifyd_network:
         aliases:
           - dev_frontend
 
 volumes:
-  ngo_dev_postgres_data:
-  ngo_dev_dragonfly_data:
-  dev_frontend_node_modules:
-  dev_frontend_nuxt:
+  classifyd_dev_postgres_data:
+  classifyd_dev_dragonfly_data:
+  classifyd_dev_frontend_node_modules:
+  classifyd_dev_frontend_nuxt:
 
 networks:
-  ngo_crm_network:
-    name: ngo_crm_network
+  classifyd_network:
+    name: classifyd_network
     external: true

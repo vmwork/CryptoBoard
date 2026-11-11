@@ -1,34 +1,34 @@
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: ngo_crm_postgres
+    container_name: classifyd_postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-ngo_crm_db}
+      POSTGRES_DB: ${POSTGRES_DB:-classifyd_db}
     expose:
       - "5432"
     volumes:
-      - ngo_crm_postgres_data:/var/lib/postgresql/data
+      - classifyd_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}" ]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - ngo_crm_network
+      - classifyd_network
 
   dragonfly:
     image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
-    container_name: ngo_crm_cache
+    container_name: classifyd_cache
     expose:
       - "6379"
     volumes:
-      - ngo_crm_dragonfly_data:/data
+      - classifyd_dragonfly_data:/data
     environment:
       - HEALTHCHECK_PORT=6379
     networks:
-      - ngo_crm_network
+      - classifyd_network
     healthcheck:
       test: [ "CMD-SHELL", "/usr/local/bin/healthcheck.sh" ]
       interval: 10s
@@ -39,7 +39,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ngo_crm_api
+    container_name: classifyd_api
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2
     expose:
       - "8000"
@@ -51,63 +51,66 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-ngo_crm_db}
-      - REDIS_URL=redis://dragonfly:6379
-      - SECRET_KEY=${SECRET_KEY}
-      - ALGORITHM=${ALGORITHM:-HS256}
-      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-10080}
-      - SECRET_KEY=${SECRET_KEY}
-      - ALGORITHM=${ALGORITHM:-HS256}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
-      - INITIAL_ADMIN_PASSWORD=${INITIAL_ADMIN_PASSWORD:-}
+      - POSTGRES_DB=${POSTGRES_DB:-classifyd_db}
+      - REDIS_URL=redis://classifyd_cache:6379
+      - SECRET_KEY=${SECRET_KEY:?SECRET_KEY is required}
+      - INTERNAL_BFF_SECRET=${INTERNAL_BFF_SECRET:?INTERNAL_BFF_SECRET is required}
+      - EVM_RPC_URL=${EVM_RPC_URL:?EVM_RPC_URL is required}
+      - EVM_CHAIN_ID=${EVM_CHAIN_ID:-42161}
+      - SIWE_DOMAIN=${SIWE_DOMAIN:?SIWE_DOMAIN is required}
+      - SIWE_URI=${SIWE_URI:?SIWE_URI is required}
+      - SESSION_COOKIE_NAME=${SESSION_COOKIE_NAME:-session_id}
+      - NONCE_TTL_SECONDS=${NONCE_TTL_SECONDS:-300}
+      - SESSION_TTL_SECONDS=${SESSION_TTL_SECONDS:-604800}
     depends_on:
       postgres:
         condition: service_healthy
       dragonfly:
         condition: service_healthy
     networks:
-      - ngo_crm_network
+      - classifyd_network
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: ngo_crm_nuxt
+    container_name: classifyd_frontend
     expose:
       - "3000"
     environment:
       - NITRO_PORT=3000
       - NITRO_HOST=0.0.0.0
-      - NUXT_API_BASE=http://backend:8000
+      - NUXT_API_BASE=http://classifyd_api:8000
       - NUXT_PUBLIC_API_BASE=http://localhost
+      - NUXT_INTERNAL_BFF_SECRET=${INTERNAL_BFF_SECRET:?INTERNAL_BFF_SECRET is required}
+      - NUXT_SESSION_COOKIE_NAME=${SESSION_COOKIE_NAME:-session_id}
     depends_on:
       - backend
     networks:
-      - ngo_crm_network
+      - classifyd_network
 
   caddy:
     image: caddy:2-alpine
-    container_name: ngo_crm_gateway
+    container_name: classifyd_gateway
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ngo_crm_caddy_data:/data
-      - ngo_crm_caddy_config:/config
+      - classifyd_caddy_data:/data
+      - classifyd_caddy_config:/config
     depends_on:
       - frontend
     networks:
-      - ngo_crm_network
+      - classifyd_network
 
 volumes:
-  ngo_crm_postgres_data:
-  ngo_crm_dragonfly_data:
-  ngo_crm_caddy_data:
-  ngo_crm_caddy_config:
+  classifyd_postgres_data:
+  classifyd_dragonfly_data:
+  classifyd_caddy_data:
+  classifyd_caddy_config:
 
 networks:
-  ngo_crm_network:
-    name: ngo_crm_network
+  classifyd_network:
+    name: classifyd_network
     driver: bridge
