@@ -1,10 +1,12 @@
 import type { H3Event } from 'h3'
-import { createError, getHeader, getRequestHeaders } from 'h3'
+import { createError, getHeader, getRequestHeaders, setResponseStatus } from 'h3'
 
 interface BackendRequestOptions {
-  method?: 'GET' | 'POST'
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   body?: unknown
+  query?: Record<string, string | string[]>
   forwardSession?: boolean
+  successStatus?: number
 }
 
 export async function proxyToBackend<T>(
@@ -34,12 +36,19 @@ export async function proxyToBackend<T>(
   }
 
   try {
-    return await $fetch<T>(path, {
+    const response = await $fetch<T>(path, {
       baseURL: config.apiBase,
       method: options.method,
       body: options.body,
+      query: options.query,
       headers,
     })
+
+    if (options.successStatus !== undefined) {
+      setResponseStatus(event, options.successStatus)
+    }
+
+    return response
   } catch (error: unknown) {
     const fetchError = error as {
       statusCode?: number

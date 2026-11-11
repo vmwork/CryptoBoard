@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Зеленый щит -->
+  <path d="M32 6L12 16V28C12 40 18 48 32 52C46 48 52 40 52 28V16L32 6Z" fill="#00DC82"/>
+  
+  <!-- Белая буква C -->
+  <text x="32" y="42" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="white" text-anchor="middle">C</text>
+</svg>

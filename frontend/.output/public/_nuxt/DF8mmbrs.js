@@ -1,0 +1,1 @@
+import{_ as e,b as t,mt as n,xt as r}from"./B4b-2GOK.js";import{t as i}from"./BDNMzG2s.js";var a={},o={'"':``};function s(i,a){return n(),t(`div`,o,[e(`main`,null,[r(i.$slots,`default`)])])}var c=i(a,[[`render`,s]]);export{c as default};
