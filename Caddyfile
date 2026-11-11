@@ -1,0 +1,94 @@
+(security_headers) {
+    header {
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        X-Content-Type-Options "nosniff"
+        Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' http://localhost http://dev.localhost https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com"
+    }
+}
+
+# Локальный контур
+http://localhost {
+    import security_headers
+
+    log {
+        output file /var/log/caddy/access.log
+    }
+
+    # Глобальное сжатие статики и HTML для Lighthouse
+    encode gzip zstd
+
+    # Именованный матчер для статики Nuxt и шрифтов из папки public
+    @nuxt_static path /_nuxt/* /fonts/* /favicon.ico /logo.png
+
+    # Кэширование загрузок из бэкенда
+    handle /api/uploads/* {
+        uri strip_prefix /api
+        reverse_proxy ngo_crm_api:8000
+        header Cache-Control "public, max-age=31536000, immutable"
+    }
+
+    handle /api/v1/* {
+        reverse_proxy ngo_crm_api:8000
+    }
+
+    handle /docs {
+        reverse_proxy ngo_crm_api:8000
+    }
+
+    handle /openapi.json {
+        reverse_proxy ngo_crm_api:8000
+    }
+
+    # Жесткий перехват статики Nuxt и шрифтов
+    handle @nuxt_static {
+        reverse_proxy ngo_crm_nuxt:3000
+        header +Cache-Control "public, max-age=31536000, immutable"
+    }
+
+    # Все остальные страницы Nuxt
+    handle {
+        reverse_proxy ngo_crm_nuxt:3000
+    }
+}
+
+# Локальний dev-контур
+http://dev.localhost {
+    import security_headers
+
+    log {
+        output file /var/log/caddy/dev_access.log
+    }
+
+    @frontend_only {
+        not path /api/* /docs* /openapi.json*
+    }
+
+    basic_auth @frontend_only {
+        dev $2a$14$SLDLjtV/a2wt59VPHgwGhOEpRfVmNNTTr.IlvbkbFnH5ZHGvbcUkW
+    }
+
+    # uploads — со strip_prefix
+    handle /api/uploads/* {
+        uri strip_prefix /api
+        reverse_proxy ngo_dev_api:8000
+        header Cache-Control "no-store, no-cache, must-revalidate"
+    }
+
+    # всё остальное /api/* — в бэкенд как есть
+    handle /api/* {
+        reverse_proxy ngo_dev_api:8000
+    }
+
+    handle /docs {
+        reverse_proxy ngo_dev_api:8000
+    }
+
+    handle /openapi.json {
+        reverse_proxy ngo_dev_api:8000
+    }
+
+    handle {
+        reverse_proxy ngo_dev_nuxt:3000
+    }
+}

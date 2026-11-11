@@ -1,10 +1,7 @@
 <template>
-    <div class="relative isolate min-h-screen bg-white">
-        <!-- Легкий градиентный фон вместо звезд -->
-        <div class="absolute inset-0 z-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-blue-500/5 blur-3xl"></div>
-        </div>
+    <div class="relative isolate min-h-screen bg-white dark:bg-neutral-950">
+        <!-- Фон -->
+        <LandingBackground variant="default" :show-blob="true" />
 
         <!-- Контент -->
         <div class="relative z-10 flex min-h-screen flex-col">
@@ -16,7 +13,6 @@
         </div>
     </div>
 </template>
-
 <script setup lang="ts">
 // ✅ Используем ref для звезд, чтобы инициализировать на клиенте
 const stars = ref<Array<{ x: number; y: number; size: number; opacity: number }>>([])

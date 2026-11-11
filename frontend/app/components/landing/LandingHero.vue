@@ -1,5 +1,7 @@
 <template>
     <section class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden px-4 sm:px-6 lg:px-8">
+        <LandingBackground variant="hero" :show-blob="true" />
+
         <div class="mx-auto max-w-7xl">
             <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
                 <!-- Левая колонка -->

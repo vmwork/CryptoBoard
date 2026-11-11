@@ -1,0 +1,113 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ngo_crm_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-ngo_crm_db}
+    expose:
+      - "5432"
+    volumes:
+      - ngo_crm_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ngo_crm_network
+
+  dragonfly:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
+    container_name: ngo_crm_cache
+    expose:
+      - "6379"
+    volumes:
+      - ngo_crm_dragonfly_data:/data
+    environment:
+      - HEALTHCHECK_PORT=6379
+    networks:
+      - ngo_crm_network
+    healthcheck:
+      test: [ "CMD-SHELL", "/usr/local/bin/healthcheck.sh" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ngo_crm_api
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2
+    expose:
+      - "8000"
+    volumes:
+      - ./backend:/app/backend
+    environment:
+      - PYTHONPATH=/app
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-ngo_crm_db}
+      - REDIS_URL=redis://dragonfly:6379
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM:-HS256}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-10080}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM:-HS256}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - INITIAL_ADMIN_PASSWORD=${INITIAL_ADMIN_PASSWORD:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      dragonfly:
+        condition: service_healthy
+    networks:
+      - ngo_crm_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ngo_crm_nuxt
+    expose:
+      - "3000"
+    environment:
+      - NITRO_PORT=3000
+      - NITRO_HOST=0.0.0.0
+      - NUXT_API_BASE=http://backend:8000
+      - NUXT_PUBLIC_API_BASE=http://localhost
+    depends_on:
+      - backend
+    networks:
+      - ngo_crm_network
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: ngo_crm_gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ngo_crm_caddy_data:/data
+      - ngo_crm_caddy_config:/config
+    depends_on:
+      - frontend
+    networks:
+      - ngo_crm_network
+
+volumes:
+  ngo_crm_postgres_data:
+  ngo_crm_dragonfly_data:
+  ngo_crm_caddy_data:
+  ngo_crm_caddy_config:
+
+networks:
+  ngo_crm_network:
+    name: ngo_crm_network
+    driver: bridge

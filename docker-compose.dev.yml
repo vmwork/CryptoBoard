@@ -1,0 +1,108 @@
+name: ngo-crm-dev
+
+services:
+  dev_postgres:
+    image: postgres:15-alpine
+    container_name: ngo_dev_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${NGO_DEV_POSTGRES_DB:-ngo_dev_db}
+    expose:
+      - "5432"
+    volumes:
+      - ngo_dev_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ngo_crm_network
+
+  dev_dragonfly:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
+    container_name: ngo_dev_cache
+    expose:
+      - "6379"
+    volumes:
+      - ngo_dev_dragonfly_data:/data
+    environment:
+      - HEALTHCHECK_PORT=6379
+    networks:
+      - ngo_crm_network
+    healthcheck:
+      test: [ "CMD-SHELL", "/usr/local/bin/healthcheck.sh" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dev_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ngo_dev_api
+    # ⚡ СТЕЙДЖ: строго 1 воркер для экономии ресурсов
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 1
+    expose:
+      - "8000"
+    volumes:
+      - ./backend:/app/backend
+    environment:
+      - PYTHONPATH=/app
+      - POSTGRES_SERVER=dev_postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${NGO_DEV_POSTGRES_DB:-ngo_dev_db}
+      - REDIS_URL=redis://dev_dragonfly:6379
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM:-HS256}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-10080}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - INITIAL_ADMIN_PASSWORD=${INITIAL_ADMIN_PASSWORD:-}
+    depends_on:
+      dev_postgres:
+        condition: service_healthy
+      dev_dragonfly:
+        condition: service_healthy
+    networks:
+      ngo_crm_network:
+        aliases:
+          - dev_backend
+
+  dev_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ngo_dev_nuxt
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    environment:
+      - NITRO_PORT=3000
+      - NITRO_HOST=0.0.0.0
+      - NUXT_API_BASE=http://dev_backend:8000
+      - NUXT_PUBLIC_API_BASE=http://dev.localhost
+      - NUXT_PUBLIC_SITE_URL=http://dev.localhost
+      - SITE_URL=http://dev.localhost
+      - SITE_INDEXABLE=false
+    depends_on:
+      - dev_backend
+    networks:
+      ngo_crm_network:
+        aliases:
+          - dev_frontend
+
+volumes:
+  ngo_dev_postgres_data:
+  ngo_dev_dragonfly_data:
+  dev_frontend_node_modules:
+  dev_frontend_nuxt:
+
+networks:
+  ngo_crm_network:
+    name: ngo_crm_network
+    external: true

@@ -99,9 +99,23 @@ const data = {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
-                        <a href="#">
-                            <IconBrandBinance class="!size-5" />
-                            <span class="text-base font-semibold">CryptoBoard</span>
+                        <a href="/">
+                            <svg width="180" height="36" viewBox="0 0 180 36" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="h-7 w-auto text-sidebar-foreground">
+                                <!-- Иконка -->
+                                <g transform="translate(0, 2)">
+                                    <path d="M14 2L4 5.5V10.5C4 15.5 7.5 20.5 14 22C20.5 20.5 24 15.5 24 10.5V5.5L14 2Z"
+                                        stroke="#00DC82" stroke-width="2" stroke-linejoin="round" />
+                                    <path d="M9.5 12L12 14.5L18 9" stroke="#00DC82" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </g>
+
+                                <!-- Текст с currentColor -->
+                                <text x="32" y="25" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="18"
+                                    font-weight="700" fill="currentColor" letter-spacing="0">Crypto</text>
+                                <text x="108" y="25" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="18"
+                                    font-weight="700" fill="#00DC82" letter-spacing="0">Board</text>
+                            </svg>
                         </a>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
