@@ -132,6 +132,14 @@ def enforce_active_listing_limit(
                 "limit": limit,
             },
         )
+    if locked_seller.wallet_address is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "code": "WALLET_REQUIRED",
+                "message": "Link an EVM wallet before creating or activating a listing",
+            },
+        )
     if not locked_seller.has_passport and get_outgoing_transaction_count(
         locked_seller.wallet_address,
         cache,

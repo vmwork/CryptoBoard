@@ -1,13 +1,17 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
 
+BASE_DIR = Path(__file__).resolve().parents[3]
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=BASE_DIR / ".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
@@ -24,6 +28,8 @@ class Settings(BaseSettings):
     evm_chain_id: int = Field(default=42161, gt=0)
     secret_key: str
     internal_bff_secret: str
+    telegram_bot_token: str = ""
+    telegram_bot_username: str = ""
 
     siwe_domain: str = "localhost"
     siwe_uri: str = "http://localhost"
@@ -43,6 +49,13 @@ class Settings(BaseSettings):
     def validate_not_empty(cls, value: str) -> str:
         if not value.strip():
             raise ValueError("must not be empty")
+        return value.strip()
+
+    @field_validator("telegram_bot_token", "telegram_bot_username")
+    @classmethod
+    def normalize_telegram_values(cls, value: str) -> str:
+        if value is None:
+            return ""
         return value.strip()
 
     @property

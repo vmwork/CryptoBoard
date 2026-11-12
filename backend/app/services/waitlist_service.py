@@ -30,7 +30,7 @@ def join_waitlist(
     if wallet_address is None:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail={"code": "WALLET_REQUIRED", "message": "wallet_address or SIWE session is required"},
+            detail={"code": "WALLET_REQUIRED", "message": "wallet_address or a linked wallet session is required"},
         )
 
     existing = db.scalar(

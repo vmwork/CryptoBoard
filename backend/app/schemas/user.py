@@ -26,11 +26,35 @@ class VerifyRequest(BaseModel):
     signature: str = Field(pattern=r"^0x[0-9a-fA-F]{130}$")
 
 
+class TelegramWebAppRequest(BaseModel):
+    init_data: str = Field(min_length=1, max_length=8192, alias="initData")
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class TelegramWidgetRequest(BaseModel):
+    id: int = Field(gt=0)
+    first_name: str = Field(min_length=1, max_length=64)
+    last_name: str | None = Field(default=None, max_length=64)
+    username: str | None = Field(default=None, max_length=32)
+    photo_url: str | None = Field(default=None, max_length=2048)
+    auth_date: int = Field(gt=0)
+    hash: str = Field(pattern=r"^[0-9a-fA-F]{64}$")
+
+
+class LinkWalletRequest(VerifyRequest):
+    pass
+
+
 class UserProfile(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
-    wallet_address: str
+    wallet_address: str | None
+    telegram_id: int | None
+    telegram_username: str | None
+    first_name: str | None
+    avatar_url: str | None
     referrer_id: uuid.UUID | None
     has_passport: bool
     is_active: bool
