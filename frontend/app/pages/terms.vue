@@ -1,10 +1,10 @@
 <template>
-    <div class="min-h-screen bg-neutral-50">
+    <div class="min-h-screen bg-background text-foreground">
         <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
             <!-- Навигация назад -->
             <div class="mb-8">
                 <NuxtLink to="/"
-                    class="inline-flex items-center gap-2 text-sm text-neutral-600 transition hover:text-neutral-900">
+                    class="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -14,12 +14,12 @@
             </div>
 
             <!-- Контент -->
-            <div class="overflow-hidden rounded-2xl bg-white shadow-sm">
-                <div class="border-b border-neutral-100 px-6 py-8 sm:px-10 sm:py-10">
-                    <h1 class="text-3xl font-bold text-neutral-900 sm:text-4xl">
+            <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="border-b border-border px-6 py-8 sm:px-10 sm:py-10">
+                    <h1 class="text-3xl font-bold text-foreground sm:text-4xl">
                         Пользовательское соглашение
                     </h1>
-                    <p class="mt-2 text-sm text-neutral-500">
+                    <p class="mt-2 text-sm text-muted-foreground">
                         Последнее обновление: 12 августа 2026
                     </p>
                 </div>
@@ -27,11 +27,11 @@
                 <div class="space-y-8 px-6 py-8 sm:px-10 sm:py-10">
                     <!-- Раздел 1 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">1. Общие положения</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
+                        <h2 class="text-xl font-semibold text-foreground">1. Общие положения</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
                             <p>
                                 Настоящее Пользовательское соглашение (далее — «Соглашение») регулирует отношения между
-                                <span class="font-medium">CryptoBoard</span> (далее — «Платформа») и пользователем
+                                <span class="font-medium text-foreground">CryptoBoard</span> (далее — «Платформа») и пользователем
                                 (далее — «Пользователь»)
                                 при использовании сервисов Платформы.
                             </p>
@@ -45,17 +45,17 @@
 
                     <!-- Раздел 2 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">2. Статус Платформы</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
-                            <p class="font-medium text-neutral-900">
+                        <h2 class="text-xl font-semibold text-foreground">2. Статус Платформы</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
+                            <p class="font-medium text-foreground">
                                 CryptoBoard является информационной площадкой (доской объявлений) и НЕ является:
                             </p>
-                            <ul class="list-disc space-y-2 pl-6">
+                            <ul class="list-disc space-y-2 pl-6 text-foreground">
                                 <li>Посредником, агентом или брокером</li>
                                 <li>Финансовым институтом или банком</li>
                                 <li>Организатором торгов или биржей</li>
                             </ul>
-                            <p class="mt-3">
+                            <p class="mt-3 text-muted-foreground">
                                 Платформа предоставляет возможность размещения объявлений о продаже/покупке цифровых
                                 активов,
                                 но не участвует в сделках между пользователями.
@@ -65,14 +65,14 @@
 
                     <!-- Раздел 3 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">3. Смарт-контракты</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
+                        <h2 class="text-xl font-semibold text-foreground">3. Смарт-контракты</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
                             <p>
                                 Платформа предоставляет инфраструктуру для использования смарт-контрактов, но:
                             </p>
-                            <ul class="list-disc space-y-2 pl-6">
+                            <ul class="list-disc space-y-2 pl-6 text-foreground">
                                 <li>
-                                    <span class="font-medium">Смарт-контракты являются самоисполняемыми</span>
+                                    <span class="font-medium text-foreground">Смарт-контракты являются самоисполняемыми</span>
                                     и действуют независимо от Платформы
                                 </li>
                                 <li>
@@ -90,10 +90,10 @@
 
                     <!-- Раздел 4 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">4. Ответственность Пользователя</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
-                            <p>Пользователь несет полную ответственность за:</p>
-                            <ul class="list-disc space-y-2 pl-6">
+                        <h2 class="text-xl font-semibold text-foreground">4. Ответственность Пользователя</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
+                            <p class="text-muted-foreground">Пользователь несет полную ответственность за:</p>
+                            <ul class="list-disc space-y-2 pl-6 text-foreground">
                                 <li>Достоверность размещаемой информации</li>
                                 <li>Соблюдение законодательства своей юрисдикции</li>
                                 <li>Безопасность своего аккаунта и крипто-кошелька</li>
@@ -105,12 +105,12 @@
 
                     <!-- Раздел 5 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">5. Ограничение ответственности</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
-                            <p class="font-medium text-neutral-900">
+                        <h2 class="text-xl font-semibold text-foreground">5. Ограничение ответственности</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
+                            <p class="font-medium text-foreground">
                                 Платформа предоставляется «как есть» (AS IS) и НЕ несет ответственности за:
                             </p>
-                            <ul class="list-disc space-y-2 pl-6">
+                            <ul class="list-disc space-y-2 pl-6 text-foreground">
                                 <li>Убытки, связанные с использованием Платформы</li>
                                 <li>Действия или бездействие других пользователей</li>
                                 <li>Технические сбои блокчейна или интернета</li>
@@ -122,8 +122,8 @@
 
                     <!-- Раздел 6 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">6. Интеллектуальная собственность</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
+                        <h2 class="text-xl font-semibold text-foreground">6. Интеллектуальная собственность</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
                             <p>
                                 Все материалы, размещенные на Платформе, включая текст, графику, логотипы, иконки,
                                 являются собственностью CryptoBoard и защищены авторским правом.
@@ -137,12 +137,12 @@
 
                     <!-- Раздел 7 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">7. NFT и монетизация</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
+                        <h2 class="text-xl font-semibold text-foreground">7. NFT и монетизация</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
                             <p>
                                 Платформа может генерировать и продавать NFT как дополнительный сервис:
                             </p>
-                            <ul class="list-disc space-y-2 pl-6">
+                            <ul class="list-disc space-y-2 pl-6 text-foreground">
                                 <li>NFT создаются автоматически при успешном завершении сделки</li>
                                 <li>NFT являются цифровым активом и подтверждением совершенной сделки</li>
                                 <li>Платформа не гарантирует ликвидность или стоимость NFT</li>
@@ -153,8 +153,8 @@
 
                     <!-- Раздел 8 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">8. Изменение Соглашения</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
+                        <h2 class="text-xl font-semibold text-foreground">8. Изменение Соглашения</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
                             <p>
                                 Платформа оставляет за собой право изменять настоящее Соглашение в любое время.
                                 Изменения вступают в силу с момента публикации на сайте.
@@ -168,8 +168,8 @@
 
                     <!-- Раздел 9 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">9. Применимое право</h2>
-                        <div class="mt-3 space-y-3 text-neutral-700 leading-relaxed">
+                        <h2 class="text-xl font-semibold text-foreground">9. Применимое право</h2>
+                        <div class="mt-3 space-y-3 text-muted-foreground leading-relaxed">
                             <p>
                                 Настоящее Соглашение регулируется и толкуется в соответствии с законодательством
                                 страны регистрации Платформы.
@@ -183,18 +183,18 @@
 
                     <!-- Раздел 10 -->
                     <section>
-                        <h2 class="text-xl font-semibold text-neutral-900">10. Контакты</h2>
-                        <div class="mt-3 rounded-xl bg-neutral-50 p-4 text-neutral-700">
+                        <h2 class="text-xl font-semibold text-foreground">10. Контакты</h2>
+                        <div class="mt-3 rounded-xl border border-border bg-card p-4 text-muted-foreground">
                             <p>По всем вопросам, связанным с Соглашением, обращайтесь:</p>
                             <div class="mt-2 space-y-1">
                                 <p>
-                                    <span class="font-medium">Email:</span>
+                                    <span class="font-medium text-foreground">Email:</span>
                                     <a href="mailto:support@cryptoboard.com" class="text-primary hover:underline">
                                         support@cryptoboard.com
                                     </a>
                                 </p>
                                 <p>
-                                    <span class="font-medium">Telegram:</span>
+                                    <span class="font-medium text-foreground">Telegram:</span>
                                     <a href="#" class="text-primary hover:underline">@cryptoboard_support</a>
                                 </p>
                             </div>

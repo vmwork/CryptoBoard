@@ -1,5 +1,5 @@
 <template>
-    <footer class="border-t border-neutral-200/50 bg-white px-4 py-8 sm:px-6 lg:px-8">
+    <footer class="border-t border-border bg-card px-4 py-8 sm:px-6 lg:px-8 text-muted-foreground">
         <div class="mx-auto max-w-7xl">
             <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
                 <!-- Левая часть -->
@@ -15,21 +15,21 @@
 
                         <!-- Текст: CryptoBoard -->
                         <text x="38" y="30" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="22"
-                            font-weight="700" fill="#1A1A1A" letter-spacing="0">Crypto</text>
+                            font-weight="700" fill="currentColor" letter-spacing="0">Crypto</text>
                         <text x="124" y="30" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="22"
                             font-weight="700" fill="#00DC82" letter-spacing="0">Board</text>
-                    </svg> <span class="text-xs text-neutral-400">© 2026</span>
+                    </svg> <span class="text-xs text-muted-foreground">© 2026</span>
                 </div>
 
                 <!-- Правая часть: ссылки -->
-                <div class="flex flex-wrap items-center justify-center gap-4 text-xs text-neutral-500">
-                    <a href="/terms" class="transition hover:text-neutral-900">Terms of Service</a>
+                <div class="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
+                    <a href="/terms" class="transition hover:text-primary text-foreground">Terms of Service</a>
                     <span class="hidden sm:inline text-neutral-300">•</span>
-                    <a href="/privacy" class="transition hover:text-neutral-900">Privacy Policy</a>
+                    <a href="/privacy" class="transition hover:text-primary text-foreground">Privacy Policy</a>
                     <span class="hidden sm:inline text-neutral-300">•</span>
-                    <a href="/faq" class="transition hover:text-neutral-900">FAQ</a>
+                    <a href="/faq" class="transition hover:text-primary text-foreground">FAQ</a>
                     <span class="hidden sm:inline text-neutral-300">•</span>
-                    <a href="/support" class="transition hover:text-neutral-900">Support</a>
+                    <a href="/support" class="transition hover:text-primary text-foreground">Support</a>
                 </div>
             </div>
 

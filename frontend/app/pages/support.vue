@@ -1,10 +1,10 @@
 <template>
-    <div class="min-h-screen bg-neutral-50">
+    <div class="min-h-screen bg-background text-foreground">
         <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
             <!-- Навигация назад -->
             <div class="mb-8">
                 <NuxtLink to="/"
-                    class="inline-flex items-center gap-2 text-sm text-neutral-600 transition hover:text-neutral-900">
+                    class="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -14,8 +14,8 @@
             </div>
 
             <!-- Контент -->
-            <div class="overflow-hidden rounded-2xl bg-white shadow-sm">
-                <div class="border-b border-neutral-100 px-6 py-8 sm:px-10 sm:py-10">
+            <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="border-b border-border px-6 py-8 sm:px-10 sm:py-10">
                     <div class="flex items-center gap-3">
                         <div class="rounded-full bg-primary/10 p-3 text-primary">
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -24,10 +24,10 @@
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-3xl font-bold text-neutral-900 sm:text-4xl">
+                            <h1 class="text-3xl font-bold text-foreground sm:text-4xl">
                                 Служба поддержки
                             </h1>
-                            <p class="mt-1 text-neutral-600">
+                            <p class="mt-1 text-muted-foreground">
                                 Мы ответим в течение 24 часов
                             </p>
                         </div>
@@ -37,38 +37,38 @@
                 <div class="px-6 py-8 sm:px-10 sm:py-10">
                     <!-- Альтернативные контакты -->
                     <div class="mb-8 grid gap-4 sm:grid-cols-3">
-                        <div class="rounded-xl border border-neutral-100 bg-neutral-50 p-4 text-center">
+                        <div class="rounded-xl border border-border bg-card p-4 text-center">
                             <svg class="mx-auto h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <p class="mt-1 text-sm font-medium text-neutral-900">Email</p>
+                            <p class="mt-1 text-sm font-medium text-foreground">Email</p>
                             <a href="mailto:support@cryptoboard.com" class="text-sm text-primary hover:underline">
                                 support@cryptoboard.com
                             </a>
                         </div>
 
-                        <div class="rounded-xl border border-neutral-100 bg-neutral-50 p-4 text-center">
+                        <div class="rounded-xl border border-border bg-card p-4 text-center">
                             <svg class="mx-auto h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                             </svg>
-                            <p class="mt-1 text-sm font-medium text-neutral-900">Telegram</p>
+                            <p class="mt-1 text-sm font-medium text-foreground">Telegram</p>
                             <a href="#" class="text-sm text-primary hover:underline">
                                 @cryptoboard_support
                             </a>
                         </div>
 
-                        <div class="rounded-xl border border-neutral-100 bg-neutral-50 p-4 text-center">
+                        <div class="rounded-xl border border-border bg-card p-4 text-center">
                             <svg class="mx-auto h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <p class="mt-1 text-sm font-medium text-neutral-900">Время ответа</p>
-                            <p class="text-sm text-neutral-600">Обычно в течение 24 ч</p>
+                            <p class="mt-1 text-sm font-medium text-foreground">Время ответа</p>
+                            <p class="text-sm text-muted-foreground">Обычно в течение 24 ч</p>
                         </div>
                     </div>
 
@@ -77,32 +77,32 @@
                         <div class="grid gap-6 sm:grid-cols-2">
                             <!-- Имя -->
                             <div>
-                                <label for="name" class="block text-sm font-medium text-neutral-700">
+                                <label for="name" class="block text-sm font-medium text-muted-foreground">
                                     Ваше имя <span class="text-red-500">*</span>
                                 </label>
                                 <input id="name" v-model="form.name" type="text" required
-                                    class="mt-1 block w-full rounded-xl border border-neutral-300 px-4 py-3 text-neutral-900 placeholder-neutral-400 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                    class="mt-1 block w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                                     placeholder="Иван Иванов" />
                             </div>
 
                             <!-- Email -->
                             <div>
-                                <label for="email" class="block text-sm font-medium text-neutral-700">
+                                <label for="email" class="block text-sm font-medium text-muted-foreground">
                                     Email <span class="text-red-500">*</span>
                                 </label>
                                 <input id="email" v-model="form.email" type="email" required
-                                    class="mt-1 block w-full rounded-xl border border-neutral-300 px-4 py-3 text-neutral-900 placeholder-neutral-400 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                    class="mt-1 block w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                                     placeholder="example@email.com" />
                             </div>
                         </div>
 
                         <!-- Тема -->
                         <div>
-                            <label for="subject" class="block text-sm font-medium text-neutral-700">
+                            <label for="subject" class="block text-sm font-medium text-muted-foreground">
                                 Тема обращения <span class="text-red-500">*</span>
                             </label>
                             <select id="subject" v-model="form.subject" required
-                                class="mt-1 block w-full rounded-xl border border-neutral-300 px-4 py-3 text-neutral-900 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                class="mt-1 block w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
                                 <option value="">Выберите тему</option>
                                 <option value="technical">Техническая проблема</option>
                                 <option value="transaction">Вопрос по сделке</option>
@@ -115,80 +115,79 @@
 
                         <!-- Сообщение -->
                         <div>
-                            <label for="message" class="block text-sm font-medium text-neutral-700">
+                            <label for="message" class="block text-sm font-medium text-muted-foreground">
                                 Сообщение <span class="text-red-500">*</span>
                             </label>
                             <textarea id="message" v-model="form.message" rows="6" required
-                                class="mt-1 block w-full rounded-xl border border-neutral-300 px-4 py-3 text-neutral-900 placeholder-neutral-400 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                                placeholder="Опишите вашу проблему подробнее..." />
+                                class="mt-1 block w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                placeholder="Опишите вашу проблему подробнее..."></textarea>
                         </div>
 
                         <!-- Приоритет -->
                         <div>
-                            <label class="block text-sm font-medium text-neutral-700">Приоритет</label>
+                            <label class="block text-sm font-medium text-muted-foreground">Приоритет</label>
                             <div class="mt-2 flex flex-wrap gap-4">
                                 <label class="flex items-center gap-2">
                                     <input v-model="form.priority" type="radio" value="low"
-                                        class="h-4 w-4 text-primary focus:ring-primary" />
-                                    <span class="text-sm text-neutral-600">Низкий</span>
+                                        class="h-4 w-4 accent-primary focus:ring-primary" />
+                                    <span class="text-sm text-muted-foreground">Низкий</span>
                                 </label>
                                 <label class="flex items-center gap-2">
                                     <input v-model="form.priority" type="radio" value="medium"
-                                        class="h-4 w-4 text-primary focus:ring-primary" />
-                                    <span class="text-sm text-neutral-600">Средний</span>
+                                        class="h-4 w-4 accent-primary focus:ring-primary" />
+                                    <span class="text-sm text-muted-foreground">Средний</span>
                                 </label>
                                 <label class="flex items-center gap-2">
                                     <input v-model="form.priority" type="radio" value="high"
-                                        class="h-4 w-4 text-primary focus:ring-primary" />
-                                    <span class="text-sm text-neutral-600">Высокий</span>
+                                        class="h-4 w-4 accent-primary focus:ring-primary" />
+                                    <span class="text-sm text-muted-foreground">Высокий</span>
                                 </label>
                                 <label class="flex items-center gap-2">
                                     <input v-model="form.priority" type="radio" value="urgent"
-                                        class="h-4 w-4 text-primary focus:ring-primary" />
-                                    <span class="text-sm text-neutral-600">Срочно</span>
+                                        class="h-4 w-4 accent-primary focus:ring-primary" />
+                                    <span class="text-sm text-muted-foreground">Срочно</span>
                                 </label>
                             </div>
                         </div>
 
                         <!-- Прикрепить файл -->
                         <div>
-                            <label for="file" class="block text-sm font-medium text-neutral-700">
+                            <label for="file" class="block text-sm font-medium text-muted-foreground">
                                 Прикрепить файл (опционально)
                             </label>
                             <div class="mt-1 flex items-center gap-3">
                                 <input id="file" ref="fileInput" type="file" accept="image/*,.pdf,.doc,.docx,.txt"
                                     class="hidden" @change="handleFileUpload" />
                                 <button type="button" @click="fileInput?.click()"
-                                    class="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-4 py-2.5 text-sm text-neutral-600 transition hover:border-primary hover:bg-primary/5 hover:text-primary">
+                                    class="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-muted-foreground transition hover:border-primary hover:bg-primary/5 hover:text-primary">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                     </svg>
                                     Выбрать файл
                                 </button>
-                                <span v-if="form.fileName" class="text-sm text-neutral-600">
+                                <span v-if="form.fileName" class="text-sm text-muted-foreground">
                                     {{ form.fileName }}
                                 </span>
                             </div>
-                            <p class="mt-1 text-xs text-neutral-400">
+                            <p class="mt-1 text-xs text-muted-foreground">
                                 Поддерживаемые форматы: JPG, PNG, PDF, DOC, TXT. Максимум 5MB.
                             </p>
                         </div>
 
-                        <!-- Отправить -->
-                        <button type="submit" :disabled="isSubmitting"
-                            class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:px-8">
-                            <span v-if="!isSubmitting">Отправить сообщение</span>
-                            <span v-else>Отправка...</span>
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
+                        <button type="submit"
+                            class="flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            Отправить заявку
                         </button>
+
+                        <p class="text-center text-sm text-muted-foreground">
+                            Заполни форму, и мы свяжемся с тобой в течение 24 часов.
+                        </p>
                     </form>
 
                     <!-- Успешная отправка -->
-                    <div v-if="isSuccess" class="mt-6 rounded-xl bg-emerald-50 p-4 text-emerald-700">
+                    <div v-if="isSuccess"
+                        class="mt-6 rounded-xl border border-emerald-500/40 bg-emerald-900/30 p-4 text-emerald-200">
                         <div class="flex items-center gap-3">
                             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -200,7 +199,7 @@
                     </div>
 
                     <!-- Ошибка -->
-                    <div v-if="isError" class="mt-6 rounded-xl bg-red-50 p-4 text-red-700">
+                    <div v-if="isError" class="mt-6 rounded-xl border border-red-500/40 bg-red-900/30 p-4 text-red-200">
                         <div class="flex items-center gap-3">
                             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"

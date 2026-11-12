@@ -1,5 +1,5 @@
 <template>
-    <div class="relative isolate min-h-screen bg-white dark:bg-neutral-950">
+    <div class="relative isolate min-h-screen bg-background text-foreground">
         <OnboardingModal />
         <!-- Фон -->
         <LandingBackground variant="default" :show-blob="true" />

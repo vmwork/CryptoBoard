@@ -1,5 +1,6 @@
 <template>
-    <section class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden px-4 sm:px-6 lg:px-8 dark:bg-neutral-950 dark:text-white">
+    <section
+        class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden px-4 sm:px-6 lg:px-8 bg-background text-foreground">
         <LandingBackground variant="hero" :show-blob="true" />
 
         <div class="mx-auto max-w-7xl">
@@ -14,7 +15,7 @@
                     </div>
 
                     <!-- Заголовок -->
-                    <h1 class="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl dark:text-white">
+                    <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
                         Покупай и продавай<br>
                         <span class="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent">
                             что угодно
@@ -23,9 +24,9 @@
                     </h1>
 
                     <!-- Подзаголовок -->
-                    <p class="max-w-lg text-lg text-neutral-600 sm:text-xl dark:text-neutral-300">
+                    <p class="max-w-lg text-lg text-muted-foreground sm:text-xl">
                         Смарт-контракты гарантируют безопасность каждой сделки.
-                        <span class="text-neutral-700 dark:text-neutral-100">Автоматический выпуск NFT — доказательство твоей
+                        <span class="text-muted-foreground">Автоматический выпуск NFT — доказательство твоей
                             надежности.</span>
                     </p>
 
@@ -39,7 +40,7 @@
                         </button>
 
                         <button @click="handleIntent('seller')"
-                            class="group relative inline-flex items-center gap-2 rounded-full border-2 border-neutral-300 px-8 py-4 text-lg font-semibold text-neutral-700 transition hover:scale-105 hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-95 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20">
+                            class="group relative inline-flex items-center gap-2 rounded-full border-2 border-border px-8 py-4 text-lg font-semibold text-foreground transition hover:scale-105 hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-95">
                             <IconCoins class="h-5 w-5" />
                             <span>Хочу продать</span>
                         </button>
@@ -165,15 +166,15 @@
                                                 :style="{ width: deliveryProgress + '%' }"></div>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center">
+                                        <div class="relative flex flex-col items-center mb-2">
                                             <div
-                                                class="z-10 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white transition-all duration-500">
+                                                class="z-10  flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white transition-all duration-500">
                                                 <IconCheck class="h-3.5 w-3.5" />
                                             </div>
                                             <span class="mt-1 text-[10px] text-emerald-400 font-medium">Оплачено</span>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center">
+                                        <div class="relative flex flex-col items-center mb-2">
                                             <div class="z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500"
                                                 :class="deliveryProgress >= 33 ? 'bg-primary/20 border border-primary text-primary' : 'bg-neutral-800 border border-neutral-700 text-neutral-500'">
                                                 <IconPackage class="h-3.5 w-3.5"
@@ -184,7 +185,7 @@
                                                 пути</span>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center">
+                                        <div class="relative flex flex-col items-center mb-2">
                                             <div class="z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500"
                                                 :class="deliveryProgress >= 66 ? 'bg-primary/20 border border-primary text-primary' : 'bg-neutral-800 border border-neutral-700 text-neutral-500'">
                                                 <IconCircleCheck class="h-3.5 w-3.5"
@@ -194,7 +195,7 @@
                                                 :class="deliveryProgress >= 66 ? 'text-emerald-400' : 'text-neutral-500'">Получено</span>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center">
+                                        <div class="relative flex flex-col items-center mb-2">
                                             <div class="z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500"
                                                 :class="deliveryProgress >= 90 ? 'bg-primary/20 border border-primary text-primary' : 'bg-neutral-800 border border-neutral-700 text-neutral-500'">
                                                 <IconNft class="h-3.5 w-3.5"
@@ -264,13 +265,13 @@ const estimatedTime = ref(2)
 onMounted(() => {
     // Анимация прогресса NFT
     const progressInterval = setInterval(() => {
-        if (progress.value < 75) {
+        if (progress.value < 99) {
             progress.value += Math.random() * 3 + 1
-            if (progress.value > 75) progress.value = 75
+            if (progress.value > 99) progress.value = 99
         } else {
             clearInterval(progressInterval)
         }
-    }, 300)
+    }, 200)
 
     // Анимация доставки
     const deliveryInterval = setInterval(() => {
@@ -280,7 +281,7 @@ onMounted(() => {
         } else {
             clearInterval(deliveryInterval)
         }
-    }, 500)
+    }, 100)
 
     // Таймер обратного отсчета
     const timerInterval = setInterval(() => {
