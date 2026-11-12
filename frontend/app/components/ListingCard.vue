@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from '#imports'
+import TagBadge from '@/components/ui/TagBadge.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 
 interface ListingCardProps {
   title: string
@@ -90,10 +92,9 @@ const favoriteClasses = computed(() =>
     </div>
     <div class="flex flex-1 flex-col gap-3 px-5 py-5">
       <div v-if="displayTags.length" class="flex flex-wrap gap-2">
-        <span v-for="tag in displayTags" :key="tag"
-          class="rounded-full border border-emerald-500/30 bg-emerald-700/30 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-emerald-200">
+        <TagBadge v-for="tag in displayTags" :key="tag">
           {{ tag }}
-        </span>
+        </TagBadge>
       </div>
       <p v-if="descriptionText" class="text-sm text-muted-foreground"
         style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
@@ -111,11 +112,9 @@ const favoriteClasses = computed(() =>
         </p> -->
       </div>
       <div class="mt-auto flex items-center justify-between gap-3 border-t border-border/20 pt-4">
-        <button type="button"
-          class="rounded-full border border-emerald-500/60 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-100 transition hover:bg-emerald-500/20"
-          @click.stop="goToListing">
+        <AppButton variant="ghost" size="sm" @click.stop="goToListing">
           Детали
-        </button>
+        </AppButton>
         <p class="text-lg font-semibold text-[#10B981]">
           {{ formattedPrice }}
         </p>
