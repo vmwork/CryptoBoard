@@ -1,65 +1,7 @@
 <template>
   <div class="min-h-screen bg-background text-foreground">
+    <Header :category-links="categoryLinks" />
     <div class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 lg:px-8">
-      <header
-        class="rounded-[32px] border border-border bg-card/90 px-5 py-6 shadow-[0_20px_60px_rgba(5,120,87,0.12)] backdrop-blur">
-        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <NuxtLink to="/" class="flex items-center gap-3">
-            <div
-              class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400 shadow-inner">
-              <span class="text-lg font-semibold">CB</span>
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.4em] text-muted-foreground">Classifyd</p>
-              <p class="text-[11px] uppercase tracking-[0.4em] text-muted-foreground/80">Marketplace-first</p>
-            </div>
-          </NuxtLink>
-          <div
-            class="flex flex-1 items-center gap-3 rounded-2xl border border-border bg-background/60 px-3 py-2 shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-muted-foreground" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.05 6.05a7.5 7.5 0 0 0 10.6 10.6z" />
-            </svg>
-            <input type="search" placeholder="Найти GPU, ферму, скрипт или продавца"
-              class="flex-1 bg-transparent text-sm font-medium placeholder:text-muted-foreground focus:outline-none" />
-            <button type="button"
-              class="rounded-2xl border border-border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-foreground transition hover:border-emerald-400/80 hover:text-emerald-400">
-              Поиск
-            </button>
-          </div>
-          <div class="flex flex-wrap items-center justify-end gap-2">
-            <button type="button" :aria-label="toggleLabel"
-              class="rounded-full border border-border bg-background/60 p-2 text-sm text-muted-foreground transition hover:border-emerald-400/70 hover:text-emerald-300"
-              @click="toggleTheme">
-              <span v-if="isDark" aria-hidden="true">🌙</span>
-              <span v-else aria-hidden="true">☀️</span>
-            </button>
-            <NuxtLink to="/auth"
-              class="rounded-full border border-border px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground transition hover:border-emerald-400/70 hover:text-foreground">
-              SIWE
-            </NuxtLink>
-            <a href="https://t.me/classifyd_market" target="_blank" rel="noopener noreferrer"
-              class="rounded-full border border-border px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground transition hover:border-emerald-400/70 hover:text-foreground">
-              Telegram
-            </a>
-            <NuxtLink to="/market/new"
-              class="rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-emerald-500/90">
-              Создать объявление
-            </NuxtLink>
-          </div>
-        </div>
-        <div
-          class="mt-5 grid grid-cols-2 gap-3 text-[11px] font-semibold uppercase tracking-[0.4em] text-muted-foreground sm:grid-cols-5">
-          <NuxtLink v-for="category in categoryGrid" :key="category.id" :to="category.href"
-            class="flex items-center justify-between rounded-2xl border border-border bg-background/40 px-3 py-2 transition hover:border-emerald-400/80 hover:text-emerald-300">
-            <span>{{ category.name }}</span>
-            <span aria-hidden="true">↗</span>
-          </NuxtLink>
-        </div>
-      </header>
-
-
       <section v-for="section in sections" :key="section.id" :id="section.id"
         class="space-y-4 border-b border-border/20 py-12 last:border-b-0 last:pb-6">
         <div class="flex flex-wrap items-end justify-between gap-3">
@@ -132,9 +74,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import ListingCard from '@/components/ListingCard.vue'
-import { useTheme } from '~/composables/useTheme'
+import Header from '@/components/Header.vue'
 
 definePageMeta({
   title: 'Marketplace — Classifyd',
@@ -160,9 +101,6 @@ interface Section {
   href: string
   listings: Listing[]
 }
-
-const { isDark, toggleTheme } = useTheme()
-const toggleLabel = computed(() => (isDark.value ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'))
 
 const sections: Section[] = [
   {
@@ -377,9 +315,9 @@ const sections: Section[] = [
   }
 ]
 
-const categoryGrid = sections.map((section) => ({
+const categoryLinks = sections.map((section) => ({
   id: section.id,
-  name: section.title,
+  label: section.title,
   href: `#${section.id}`
 }))
 </script>
