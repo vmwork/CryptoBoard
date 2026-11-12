@@ -160,3 +160,27 @@
     cursor: pointer;
     }
 }
+
+@layer utilities {
+  .project-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(16, 185, 129, 0.85) transparent;
+  }
+
+  .project-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .project-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .project-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.85);
+    border-radius: 999px;
+  }
+
+  .project-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #34d399;
+  }
+}

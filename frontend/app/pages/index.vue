@@ -99,6 +99,8 @@ interface Section {
   title: string
   description: string
   href: string
+  iconPath?: string
+  iconColor?: string
   listings: Listing[]
 }
 
@@ -106,6 +108,8 @@ const sections: Section[] = [
   {
     id: 'gpu',
     title: 'GPU и фермы',
+    iconPath: 'M5 7h14v10H5z M7 11h2 M7 13h2 M15 11h2 M15 13h2',
+    iconColor: '#34d399',
     description: 'High-end видеокарты и собранные фермы с Eliminator-контролями и преднастройками для USDT эскроу.',
     href: '/market/gpu',
     listings: [
@@ -164,6 +168,8 @@ const sections: Section[] = [
   {
     id: 'asic',
     title: 'ASIC-майнеры',
+    iconPath: 'M5 6h14v12H5z M8 9h8 M8 13h8',
+    iconColor: '#22c55e',
     description: 'Управляемые фермы на Antminer, Obelisk и DragonMint с собственным NFT-Deal Certificate.',
     href: '/market/asic',
     listings: [
@@ -202,6 +208,8 @@ const sections: Section[] = [
   {
     id: 'smartphones',
     title: 'Смартфоны и гаджеты',
+    iconPath: 'M10 4h4v16h-4z M11 18h2 M11 6h2',
+    iconColor: '#14b8a6',
     description: 'Флагманские смартфоны с аппаратным кошельком и поддержкой SIWE + Telegram Mini App.',
     href: '/market/smartphones',
     listings: [
@@ -240,6 +248,8 @@ const sections: Section[] = [
   {
     id: 'cpu',
     title: 'Процессоры и память',
+    iconPath: 'M7 8h10v8H7z M7 12h2 M15 12h2',
+    iconColor: '#38bdf8',
     description: 'Бесшумные комплекты с ECC RAM и SKU, подготовленные под CSI (Cold Storage Infra).',
     href: '/market/cpu',
     listings: [
@@ -278,6 +288,8 @@ const sections: Section[] = [
   {
     id: 'software',
     title: 'Софт и скрипты',
+    iconPath: 'M6 5h12l4 5v6l-4 5H6l-4-5V10z M9 8h6 M9 12h6',
+    iconColor: '#a855f7',
     description: 'Скрипты управления фермами, auto-reprice, QA-статусы и white-label бэкенды под NFT Deal Certificate.',
     href: '/market/software',
     listings: [
@@ -318,6 +330,8 @@ const sections: Section[] = [
 const categoryLinks = sections.map((section) => ({
   id: section.id,
   label: section.title,
-  href: `#${section.id}`
+  href: `#${section.id}`,
+  iconPath: section.iconPath,
+  iconColor: section.iconColor
 }))
 </script>

@@ -6,22 +6,25 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent
 } from '@/components/ui/dropdown-menu'
+import TagBadge from '@/components/ui/TagBadge.vue'
 
 type CategoryLink = {
   id: string
   label: string
   href: string
+  iconPath?: string
+  iconColor?: string
 }
 
 type FilterTag = {
   label: string
   href: string
+  iconPath?: string
+  iconColor?: string
 }
 
-type FilterGroup = {
-  id: string
-  label: string
-  helper: string
+type FilterSection = {
+  title: string
   tags: FilterTag[]
 }
 
@@ -33,38 +36,25 @@ const clearSearch = () => {
   searchQuery.value = ''
 }
 
-const filterGroups: FilterGroup[] = [
+const filterSections: FilterSection[] = [
   {
-    id: 'delivery',
-    label: 'Доставка и логистика',
-    helper: 'USDT escrow, курьеры, самовывоз',
+    title: 'Статус',
     tags: [
-      { label: 'Доставим за 24 ч', href: '/market?delivery=24h' },
-      { label: 'Курьер + защита', href: '/market?delivery=courier' },
-      { label: 'Самовывоз', href: '/market?delivery=pickup' },
-      { label: 'Релокация ферм', href: '/market?delivery=relocate' }
+      { label: 'Новое', href: '/market?status=new', iconPath: 'M12 5v14m-7-7h14' },
+      { label: 'Б/У', href: '/market?status=used', iconPath: 'M7 9.5l5 5 5-5' }
     ]
   },
   {
-    id: 'security',
-    label: 'Доверие и сертификация',
-    helper: 'NFT Deal Certificate + Seller Passport',
+    title: 'Доставка',
     tags: [
-      { label: 'NFT Deal Certificate', href: '/market?feature=nft-certificate' },
-      { label: 'Seller Passport', href: '/market?feature=seller-passport' },
-      { label: 'Verified Escrow', href: '/market?feature=verified-escrow' },
-      { label: 'SIWE Ready Stores', href: '/market?feature=siwe-ready' }
+      { label: 'USDT Escrow', href: '/market?delivery=escrow', iconPath: 'M5 12h8l-2-2m0 4l2-2H5' },
+      { label: 'Самовывоз', href: '/market?delivery=pickup', iconPath: 'M5 6h14v12H5z' }
     ]
   },
   {
-    id: 'experience',
-    label: 'Премиум опции',
-    helper: 'Платформенные интеграции',
+    title: 'Продавцы',
     tags: [
-      { label: 'Telegram Mini App', href: '/market?feature=telegram' },
-      { label: 'Pro Analytics', href: '/market?feature=pro-analytics' },
-      { label: 'API + Webhooks', href: '/market?feature=api' },
-      { label: 'Сервисное сопровождение', href: '/market?feature=service' }
+      { label: 'Проверенные продавцы', href: '/market?seller=verified', iconPath: 'M6 12l3 3 6-6' }
     ]
   }
 ]
@@ -136,13 +126,14 @@ const toggleLabel = computed(() =>
             <span class="text-[10px] text-emerald-100/70">⌄</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            class="w-[360px] max-h-[340px] overflow-hidden rounded-[26px] border border-border bg-background/90 p-4 shadow-[0_30px_60px_rgba(5,120,87,0.15)]">
-            <p class="text-[10px] uppercase tracking-[0.4em] text-muted-foreground/70">Рынок</p>
-            <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              <NuxtLink v-for="link in categoryLinks" :key="link.id" :to="link.href"
-                class="flex items-center justify-center whitespace-nowrap rounded-2xl border border-border/30 bg-emerald-500/5 px-3 py-2 text-xs font-semibold tracking-[0.3em] text-foreground transition hover:border-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-200">
-                {{ link.label }}
-              </NuxtLink>
+            class="w-[360px] min-w-[340px] max-w-[420px] overflow-hidden rounded-[26px] border border-border bg-background/90 p-4 shadow-[0_30px_60px_rgba(5,120,87,0.15)]">
+            <div class="space-y-3">
+              <p class="text-[10px] uppercase tracking-[0.4em] text-muted-foreground/70">Рынок</p>
+              <div class="flex flex-wrap gap-2">
+                <TagBadge v-for="link in categoryLinks" :key="link.id" :href="link.href" :icon-path="link.iconPath" :icon-color="link.iconColor">
+                  <span class="text-center leading-tight">{{ link.label }}</span>
+                </TagBadge>
+              </div>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -153,18 +144,16 @@ const toggleLabel = computed(() =>
             <span class="text-[10px] text-emerald-100/70">⌄</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            class="w-[380px] max-h-[360px] overflow-hidden rounded-[26px] border border-border bg-background/90 p-4 shadow-[0_30px_60px_rgba(5,120,87,0.15)]">
-            <div class="max-h-[300px] space-y-4 overflow-y-auto pr-1">
-              <div v-for="group in filterGroups" :key="group.id" class="space-y-2">
-                <div class="flex items-baseline justify-between gap-2">
-                  <p class="text-[10px] uppercase tracking-[0.4em] text-muted-foreground/70">{{ group.label }}</p>
-                  <p class="text-[9px] uppercase tracking-[0.3em] text-muted-foreground/60">{{ group.helper }}</p>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <NuxtLink v-for="tag in group.tags" :key="tag.label" :to="tag.href"
-                    class="flex items-center justify-center whitespace-nowrap rounded-2xl border border-border/30 bg-card/40 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-foreground transition hover:border-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-200">
-                    {{ tag.label }}
-                  </NuxtLink>
+            class="w-[380px] max-w-[420px] overflow-hidden rounded-[26px] border border-border bg-background/90 p-4 shadow-[0_30px_60px_rgba(5,120,87,0.15)]">
+            <div class="project-scrollbar max-h-[320px] overflow-y-auto pr-1">
+              <div class="space-y-4">
+                <div v-for="section in filterSections" :key="section.title" class="space-y-2">
+                  <p class="text-[10px] uppercase tracking-[0.4em] text-muted-foreground/70">{{ section.title }}</p>
+                  <div class="flex flex-wrap gap-2">
+                    <TagBadge v-for="tag in section.tags" :key="tag.label" :href="tag.href" :icon-path="tag.iconPath" :icon-color="tag.iconColor">
+                      {{ tag.label }}
+                    </TagBadge>
+                  </div>
                 </div>
               </div>
             </div>
