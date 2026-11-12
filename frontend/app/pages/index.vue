@@ -1,6 +1,5 @@
 <template>
   <div class="min-h-screen bg-background text-foreground">
-    <Header :category-links="categoryLinks" />
     <div class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 lg:px-8">
       <section v-for="section in sections" :key="section.id" :id="section.id"
         class="space-y-4 border-b border-border/20 py-12 last:border-b-0 last:pb-6">
@@ -75,39 +74,15 @@
 
 <script setup lang="ts">
 import ListingCard from '@/components/ListingCard.vue'
-import Header from '@/components/Header.vue'
+import { sections as sectionsData } from '@/data/sections'
 
 definePageMeta({
   title: 'Marketplace — Classifyd',
   layout: 'default'
 })
 
-interface Listing {
-  id: string
-  title: string
-  subtitle: string
-  price: number
-  seller: string
-  status: string
-  image?: string
-  badge?: string
-  href: string
-}
-
-interface Section {
-  id: string
-  title: string
-  description: string
-  href: string
-  iconPath?: string
-  iconColor?: string
-  listings: Listing[]
-}
-
-const sections: Section[] = [
-  {
-    id: 'gpu',
-    title: 'GPU и фермы',
+const sections = sectionsData
+</script>
     iconPath: 'M5 7h14v10H5z M7 11h2 M7 13h2 M15 11h2 M15 13h2',
     iconColor: '#34d399',
     description: 'High-end видеокарты и собранные фермы с Eliminator-контролями и преднастройками для USDT эскроу.',
