@@ -166,7 +166,7 @@
                                                 :style="{ width: deliveryProgress + '%' }"></div>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center mb-2">
+                                        <div class="relative flex flex-col items-center mb-3">
                                             <div
                                                 class="z-10  flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white transition-all duration-500">
                                                 <IconCheck class="h-3.5 w-3.5" />
@@ -174,7 +174,7 @@
                                             <span class="mt-1 text-[10px] text-emerald-400 font-medium">Оплачено</span>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center mb-2">
+                                        <div class="relative flex flex-col items-center mb-3">
                                             <div class="z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500"
                                                 :class="deliveryProgress >= 33 ? 'bg-primary/20 border border-primary text-primary' : 'bg-neutral-800 border border-neutral-700 text-neutral-500'">
                                                 <IconPackage class="h-3.5 w-3.5"
@@ -185,7 +185,7 @@
                                                 пути</span>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center mb-2">
+                                        <div class="relative flex flex-col items-center mb-3">
                                             <div class="z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500"
                                                 :class="deliveryProgress >= 66 ? 'bg-primary/20 border border-primary text-primary' : 'bg-neutral-800 border border-neutral-700 text-neutral-500'">
                                                 <IconCircleCheck class="h-3.5 w-3.5"
@@ -195,7 +195,7 @@
                                                 :class="deliveryProgress >= 66 ? 'text-emerald-400' : 'text-neutral-500'">Получено</span>
                                         </div>
 
-                                        <div class="relative flex flex-col items-center mb-2">
+                                        <div class="relative flex flex-col items-center mb-3">
                                             <div class="z-10 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500"
                                                 :class="deliveryProgress >= 90 ? 'bg-primary/20 border border-primary text-primary' : 'bg-neutral-800 border border-neutral-700 text-neutral-500'">
                                                 <IconNft class="h-3.5 w-3.5"

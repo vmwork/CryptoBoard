@@ -12,10 +12,10 @@ const { theme } = useTheme()
 
 useHead(() => ({
   htmlAttrs: {
-    class: theme.value === 'dark' ? 'dark' : ''
+    class: theme.value
   },
   bodyAttrs: {
-    class: theme.value === 'dark' ? 'dark' : ''
+    class: theme.value
   }
 }))
 </script>

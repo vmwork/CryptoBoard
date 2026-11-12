@@ -1,8 +1,8 @@
 # FRONTEND_MAP
 
 ## Theme defaults
-- `frontend/app/composables/useTheme.ts` — централизованная логика выбора темы, чтение/запись `classifyd_theme` и применение классов `dark/light` на `html`/`body`.
-- `frontend/app/app.vue` — подключение `useTheme` и синхронизация `htmlAttrs`/`bodyAttrs`, чтобы `dark` был установлен по умолчанию и реагировал на переключение.
+- `frontend/app/composables/useTheme.ts` — централизованная логика выбора темы, чтение/запись флага `classifyd_theme` в `localStorage` и cookie, а также применение классов `dark/light` на `html`/`body` для учёта предпочтения уже с серверного рендера.
+- `frontend/app/app.vue` — подключение `useTheme` и синхронизация `htmlAttrs`/`bodyAttrs` с текущим значением темы (`dark`/`light`), чтобы сервер и клиент рендерили одну и ту же палитру.
 - `frontend/tailwind.config.ts` — Tailwind расширен цветами, основанными на CSS-переменных (например, `background`, `foreground`, `card`, `border`, `muted-foreground`), что позволяет использовать классы вроде `text-foreground`, `bg-card`, `border-border` и автоматически переключать цвета вместе с `dark` классом.
 - `frontend/app/components/landing/LandingHeader.vue` — добавлен переключатель (иконка солнца/луны) с доступным лейблом и вызовом `toggleTheme`; шапка сохраняет светлые цвета в тёмной теме.
 - `frontend/app/components/landing/LandingHero.vue` — заголовки, описания и кнопки опираются на токены (`text-foreground`, `text-muted-foreground`, `border-border`, `bg-background`), чтобы текст всегда оставался читабельным, сохраняя яркость градиента.
