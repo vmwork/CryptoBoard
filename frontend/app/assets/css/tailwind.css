@@ -1,4 +1,36 @@
 
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Onest/Onest-400.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Onest/Onest-500.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Onest/Onest-600.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Onest/Onest-700.ttf') format('truetype');
+}
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
@@ -8,7 +40,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-sans: 'DM Sans', sans-serif;
+    --font-sans: 'Onest', 'DM Sans', sans-serif;
     --font-heading: var(--font-sans);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);

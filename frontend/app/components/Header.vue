@@ -99,8 +99,13 @@ const toggleLabel = computed(() =>
             </svg>
             <input v-model="searchQuery" type="search" placeholder="Найти GPU, ферму, инженера или NFT Deal Certificate"
               class="search-input flex-1 bg-transparent text-sm font-medium placeholder:text-muted-foreground focus:outline-none" />
-            <button v-if="hasSearch" type="button" @click="clearSearch"
-              class="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-500/60 bg-emerald-500/10 text-emerald-100 transition hover:border-emerald-400/70 hover:bg-emerald-500/20">
+            <button
+              :tabindex="hasSearch ? 0 : -1"
+              :aria-hidden="!hasSearch"
+              type="button"
+              @click="clearSearch"
+              class="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-500/60 bg-emerald-500/10 text-emerald-100 transition hover:border-emerald-400/70 hover:bg-emerald-500/20"
+              :class="hasSearch ? '' : 'opacity-0 pointer-events-none'">
               <span aria-hidden="true">✕</span>
               <span class="sr-only">Очистить запрос</span>
             </button>

@@ -48,7 +48,10 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: variableColors
+      colors: variableColors,
+      fontFamily: {
+        sans: ['Onest', 'DM Sans', 'sans-serif']
+      }
     }
   },
   plugins: []
