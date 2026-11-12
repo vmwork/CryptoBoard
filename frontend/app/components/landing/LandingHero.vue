@@ -253,6 +253,7 @@ import {
     IconPackage,
     IconCheck
 } from '@tabler/icons-vue'
+import IconNft from '~/components/IconNft.vue'
 
 const router = useRouter()
 
