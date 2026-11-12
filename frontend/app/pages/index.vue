@@ -64,12 +64,11 @@
         class="space-y-4 border-b border-border/20 py-12 last:border-b-0 last:pb-6">
         <div class="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-muted-foreground">Категория</p>
             <h2 class="text-2xl font-semibold text-foreground">{{ section.title }}</h2>
           </div>
           <NuxtLink :to="section.href"
             class="text-sm font-semibold uppercase tracking-[0.3em] text-[#10B981] transition hover:text-emerald-200">
-            Смотреть всё
+            Перейти в раздел
             <span aria-hidden="true">↗</span>
           </NuxtLink>
         </div>
@@ -181,6 +180,26 @@ const sections: Section[] = [
         status: 'В наличии',
         image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80',
         href: '/market/gpu/rtx-4090'
+      },
+      {
+        id: 'gpu-farm-12x3080',
+        title: 'Ферма 12x RTX 3080 Ti',
+        subtitle: 'Lithium battery-friendly frame',
+        price: 21800,
+        seller: 'Avalanche Rigs',
+        status: 'Ожидается пополнение',
+        image: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=1200&q=80',
+        href: '/market/gpu/farm-12x3080'
+      },
+      {
+        id: 'gpu-4090-ds',
+        title: 'Dual-slot GPU rig (2x 4090)',
+        subtitle: 'Silent cooling + MSRP bundle',
+        price: 7290,
+        seller: 'SilentFuse',
+        status: 'Подтвердили доставку',
+        image: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80',
+        href: '/market/gpu/dual-4090'
       },
       {
         id: 'gpu-farm-12x3080',
