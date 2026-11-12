@@ -1,5 +1,6 @@
 <template>
     <div class="relative isolate min-h-screen bg-white dark:bg-neutral-950">
+        <OnboardingModal />
         <!-- Фон -->
         <LandingBackground variant="default" :show-blob="true" />
 
@@ -14,6 +15,8 @@
     </div>
 </template>
 <script setup lang="ts">
+import OnboardingModal from '~/components/OnboardingModal.vue'
+
 // ✅ Используем ref для звезд, чтобы инициализировать на клиенте
 const stars = ref<Array<{ x: number; y: number; size: number; opacity: number }>>([])
 

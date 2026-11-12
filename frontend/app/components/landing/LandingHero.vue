@@ -1,5 +1,5 @@
 <template>
-    <section class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden px-4 sm:px-6 lg:px-8">
+    <section class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden px-4 sm:px-6 lg:px-8 dark:bg-neutral-950 dark:text-white">
         <LandingBackground variant="hero" :show-blob="true" />
 
         <div class="mx-auto max-w-7xl">
@@ -14,7 +14,7 @@
                     </div>
 
                     <!-- Заголовок -->
-                    <h1 class="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
+                    <h1 class="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl dark:text-white">
                         Покупай и продавай<br>
                         <span class="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent">
                             что угодно
@@ -23,9 +23,9 @@
                     </h1>
 
                     <!-- Подзаголовок -->
-                    <p class="max-w-lg text-lg text-neutral-600 sm:text-xl">
+                    <p class="max-w-lg text-lg text-neutral-600 sm:text-xl dark:text-neutral-300">
                         Смарт-контракты гарантируют безопасность каждой сделки.
-                        <span class="text-neutral-700">Автоматический выпуск NFT — доказательство твоей
+                        <span class="text-neutral-700 dark:text-neutral-100">Автоматический выпуск NFT — доказательство твоей
                             надежности.</span>
                     </p>
 
@@ -39,7 +39,7 @@
                         </button>
 
                         <button @click="handleIntent('seller')"
-                            class="inline-flex items-center gap-2 rounded-full border-2 border-neutral-300 px-8 py-4 text-lg font-semibold text-neutral-700 transition hover:border-primary hover:bg-primary/5 hover:text-primary">
+                            class="group relative inline-flex items-center gap-2 rounded-full border-2 border-neutral-300 px-8 py-4 text-lg font-semibold text-neutral-700 transition hover:scale-105 hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-95 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20">
                             <IconCoins class="h-5 w-5" />
                             <span>Хочу продать</span>
                         </button>
